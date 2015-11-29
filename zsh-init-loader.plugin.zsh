@@ -1,7 +1,7 @@
-regexp_digit='.*\/[0-9]{2}_.*\.(zsh|sh)'
-regexp_osx='.*\/osx-.*\.(zsh|sh)'
-regexp_linux='.*\/linux-.*\.(zsh|sh)'
-regexp_cygwin='.*\/cygwin-.*\.(zsh|sh)'
+regexp_digit='.*\/[0-9][0-9]_.*\.zsh'
+regexp_osx='.*\/osx-.*\.zsh'
+regexp_linux='.*\/linux-.*\.zsh'
+regexp_cygwin='.*\/cygwin-.*\.zsh'
 
 -set-default () {
   local arg_name="$1"
@@ -14,7 +14,7 @@ regexp_cygwin='.*\/cygwin-.*\.(zsh|sh)'
 unfunction -- -set-default
 
 find-files() {
-  find "$ZSH_INIT_DIR" -type f -regextype posix-awk -regex "$1" | sort
+  find "$ZSH_INIT_DIR" -type f -regex "$1" | sort
 }
 
 find-files-digit() {

@@ -17,7 +17,7 @@ antigen bundle uyorum/zsh-init-loader
 
 ## Configuration files
 Configuration files named properly in `$HOME/.zsh/inits`.
-They must start with two digits or platform name and end with zsh or sh.
+They must start with two digits or platform name and end with zsh.
 
 ### Two digits
 Files which start with two digits and underscore.
