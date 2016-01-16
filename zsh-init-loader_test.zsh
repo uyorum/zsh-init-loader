@@ -24,6 +24,11 @@ test_init_loader_load_files_digit() {
   assertEquals "$(echo $test_zsh_init_loader_00)" "first"
 }
 
+test_init_loader_load_files_stdin() {
+  echo '* load files with stdin'
+  assertEquals "$(echo $test_zsh_init_loader_stdin)" ""
+}
+
 test_init_loader_load_files_digit_order() {
   echo '* load files with digit in the correct order'
   assertEquals "$(init-loader-load-files digit | tr -d '\n')" "0099"
@@ -44,4 +49,4 @@ test_init_loader_load_files_osx() {
   assertEquals "$(init-loader-load-files osx | tr -d '\n')" "osx"
 }
 
-. ./shunit2/source/2.1/src/shunit2
+. ./shunit2/src/shunit2

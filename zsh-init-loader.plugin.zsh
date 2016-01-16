@@ -34,7 +34,7 @@ find-files-osx() {
 }
 
 init-loader-load-files() {
-  find-files-$1 | while read config_file; do
+  for config_file in `find-files-$1`; do # | while read config_file; do
     source $config_file
   done
 }
