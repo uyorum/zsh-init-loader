@@ -14,7 +14,7 @@ regexp_cygwin='.*\/cygwin-.*\.zsh'
 unfunction -- -set-default
 
 find-files() {
-  find "$ZSH_INIT_DIR" -type f -regex "$1" | sort
+  find "$ZSH_INIT_DIR" -type f -follow -regex "$1" | sort
 }
 
 find-files-digit() {
