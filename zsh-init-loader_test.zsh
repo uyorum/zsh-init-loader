@@ -1,52 +1,76 @@
-#!/bin/zsh -y
+#!/usr/bin/env zsh
 
-export ZSH_INIT_DIR=$(dirname $0)/test-inits
 SHUNIT_PARENT=$0
-. $(dirname $0)/zsh-init-loader.plugin.zsh >/dev/null 2>&1
 
-unset-env-vars() {
-  printenv | egrep '^test_zsh_init_loader_.*=.*' | cut -d '=' -f 1 |\
-    while read var; do
-      unset var
-    done
+export ZSH_INIT_DIR_ORG=$(dirname $0)/test-inits
+export ZSH_INIT_DIR_LN=${ZSH_INIT_DIR_ORG}-ln
+ZSH_INIT_DIR=${ZSH_INIT_DIR_ORG} . $(dirname $0)/zsh-init-loader.plugin.zsh
+
+unset_vars() {
+  for var in $(printenv | grep -o '^test_zsh_init_load[^=]*'); do
+    unset $var
+  done
+  unset ZSH_INIT_DIR
 }
 
 oneTimeSetUp() {
-  unset-env-vars
+  unset_vars
+  ln -s "${ZSH_INIT_DIR_ORG}" "${ZSH_INIT_DIR_LN}"
 }
 
 oneTimeTearDown() {
+  rm "${ZSH_INIT_DIR_LN}"
+  unset_vars
+  unset ZSH_INIT_DIR_ORG
+  unset ZSH_INIT_DIR_LN
+}
+
+test_zsh_init_load_files() {
+  unset_vars
+
+  echo '* symlinked ZSH_INIT_DIR'
+  ZSH_INIT_DIR=${ZSH_INIT_DIR_LN} zsh_init_load_files '.*\/00_.*\.zsh'
+  assertEquals "$(echo $test_zsh_init_load_ln)" "loaded"
+
+  echo '* load file which uses stdin'
+  ZSH_INIT_DIR=${ZSH_INIT_DIR_LN} zsh_init_load_files '.*\/.*stdin\.zsh'
+  assertEquals "$(echo $test_zsh_init_load_stdin)" "loaded"
 
 }
 
-test_init_loader_load_files_digit() {
-  echo '* load files with digit'
-  assertEquals "$(echo $test_zsh_init_loader_00)" "first"
+test_zsh_init_load_digit() {
+  unset_vars
+  ZSH_INIT_DIR=${ZSH_INIT_DIR_ORG} zsh_init_load_digit
+
+  echo '* load file with 00_'
+  assertEquals "$(echo $test_zsh_init_load_00)" "loaded"
+
+  echo '* load file with 99_'
+  assertEquals "$(echo $test_zsh_init_load_99)" "loaded"
+
+  echo '* load files with digit with correct order'
+  assertEquals "$(echo $test_zsh_init_load_digit)" "0099"
 }
 
-test_init_loader_load_files_stdin() {
-  echo '* load files with stdin'
-  assertEquals "$(echo $test_zsh_init_loader_stdin)" ""
-}
+test_zsh_init_load_platform() {
 
-test_init_loader_load_files_digit_order() {
-  echo '* load files with digit in the correct order'
-  assertEquals "$(init-loader-load-files digit | tr -d '\n')" "0099"
-}
+  echo '* load file with linux-'
+  alias uname='echo Linux'
+  unset_vars
+  ZSH_INIT_DIR=${ZSH_INIT_DIR_ORG} zsh_init_load_platform
+  assertEquals "$(echo $test_zsh_init_load_platform)" "linux"
 
-test_init_loader_load_files_cygwin() {
-  echo '* load files with "cygwin-"'
-  assertEquals "$(init-loader-load-files cygwin | tr -d '\n')" "cygwin"
-}
+  echo '* load file with cygwin-'
+  alias uname='echo CYGWIN_NT-10.0'
+  unset_vars
+  ZSH_INIT_DIR=${ZSH_INIT_DIR_ORG} zsh_init_load_platform
+  assertEquals "$(echo $test_zsh_init_load_platform)" "cygwin"
 
-test_init_loader_load_files_linux() {
-  echo '* load files with "linux-"'
-  assertEquals "$(init-loader-load-files linux | tr -d '\n')" "linux"
-}
-
-test_init_loader_load_files_osx() {
-  echo '* load files with "osx-"'
-  assertEquals "$(init-loader-load-files osx | tr -d '\n')" "osx"
+  echo '* load file with osx-'
+  alias uname='echo Darwin'
+  unset_vars
+  ZSH_INIT_DIR=${ZSH_INIT_DIR_ORG} zsh_init_load_platform
+  assertEquals "$(echo $test_zsh_init_load_platform)" "osx"
 }
 
 . ./shunit2/src/shunit2

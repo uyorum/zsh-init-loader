@@ -1,2 +1,4 @@
-export test_zsh_init_loader_99=last
-echo 99
+# load file with 99_
+export test_zsh_init_load_99='loaded'
+# load fiels with correct order
+export test_zsh_init_load_digit="${test_zsh_init_load_digit}99"

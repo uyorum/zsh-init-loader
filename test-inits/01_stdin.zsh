@@ -1,3 +1,1 @@
-export test_zsh_init_loader_stdin=a
-read
-export test_zsh_init_loader_stdin=$REPLY
+read -t 0.1
