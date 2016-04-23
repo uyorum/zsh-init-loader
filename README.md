@@ -1,4 +1,6 @@
 # zsh-init-loader
+[![Build Status](https://travis-ci.org/uyorum/zsh-init-loader.svg?branch=master)](https://travis-ci.org/uyorum/zsh-init-loader)
+
 ## What is it?
 zsh-init-loader is a loader of configuration files in zsh which is inspired by `init-loader`([emacs-jp/nit-loader](https://github.com/emacs-jp/init-loader)).
 
