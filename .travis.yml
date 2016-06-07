@@ -1,7 +1,11 @@
 language: bash
 before_script:
-  - "git --version"
-  - "zsh --version"
+  - git --version
+  - zsh --version
 install:
-  - "sudo apt-get install -y zsh make"
-script: "make all"
+  - sudo apt-get install -y zsh make
+script: make all
+notifications:
+  email: false
+  slack:
+    secure: fREzvtLeIMU1rAs7szwDbHcIxhyhKi22Qv/VvmilBUP3Xp7LRcIOw16Kyi1jmYF2fVYxeoGQDlK7Tj/p3y6yQvSk+/mALRTlmVHW4+wc6IvW3DGOLmd8W26wQlzniaCITxLuJ00GPxsYwpV/08vbRMcLnMlP7iiqDmoNQg5aFn2jh4PwzDEShj6ff/rIzSnLbB65F5WO8+yJdaw9QOHnb2davjROCNqpXSq0lVONTnKhKZYMeJl+Sp4YqDVgIY3x2Y017hqukDPGGKBF9OybSBocH886r8vDiFCtsIaU7v5VDI33ePOxWYU0BiYab/9xQ7Q39oTp1I1YR0Y7SsxjBp8ztYM0kIQ9Mmgl79wQipB6AKld3v5CA0lZItftz+jiCzgE/HbYOTqDF6C65Q5cpERsyhX4wfpP4bezezQpcMvy8RFsE8FNyxQOrHZFLt+ot/y4IE7uArpcQeXGd3KPnuuDtRDsxlow8f1N67tEvcSPkoTK1Oka3mMqocvovFNGmLSTCqcxHm9My2hPHCM/k3LNLVTRrhynA1g6ZVKznZEzJ7lmryGE0z/qVOJ2D0jYxNTyxsH2EC7+gR1+8LCMU07h+F3y0UOsVEu+HfZG/96ypr0KBXdkimw+u9QFXrDNlmBd2crk/7gcwzL3YQhqrLScPFM02jzuPtoautPsjgY=
